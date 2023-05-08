@@ -10,8 +10,7 @@ INSERT INTO Book(id, title, category_id) VALUES (3, 'Bible', 1);
 INSERT INTO Book(id, title, category_id) VALUES (4, 'Quran', 1);
 
 
-INSERT INTO Book_Author(book_id, author_id) VALUES (1, 1);
-INSERT INTO Book_Author(book_id, author_id) VALUES (3, 1);
-
-DELETE FROM Author WHERE id=1;
-SELECT * FROM Author;
+INSERT INTO Book_Author (book_id, author_id) VALUES (1, 1);
+INSERT INTO Book_Author (book_id, author_id) VALUES (2, 2);
+INSERT INTO Book_Author (book_id, author_id) VALUES (3, 1);
+INSERT INTO Book_Author (book_id, author_id) VALUES (4, 1);
