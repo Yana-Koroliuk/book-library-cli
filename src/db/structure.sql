@@ -1,21 +1,21 @@
 CREATE TABLE Author (
-    id bigint PRIMARY KEY,
-    name varchar(255) NOT NULL
+    id bigserial PRIMARY KEY,
+    name varchar(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE Category (
-    id int PRIMARY KEY,
-    name varchar(255) NOT NULL
+    id bigserial PRIMARY KEY,
+    name varchar(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE Book (
-    id bigint PRIMARY KEY,
-    title varchar(255) NOT NULL,
+    id bigserial PRIMARY KEY,
+    title varchar(255) NOT NULL UNIQUE,
     category_id int NOT NULL,
     CONSTRAINT fk_category_id
         FOREIGN KEY (category_id)
             REFERENCES Category(id)
-                  ON DELETE CASCADE
+                ON DELETE CASCADE
 );
 
 CREATE TABLE Book_Author (
@@ -26,19 +26,19 @@ CREATE TABLE Book_Author (
     CONSTRAINT fk_author_id FOREIGN KEY (author_id) REFERENCES Author(id) ON DELETE CASCADE
 );
 
-CREATE TABLE User {
-    id bigint PRIMARY KEY,
-    name varchar(255) NOT NULL
-};
+CREATE TABLE "User" (
+    id   bigserial PRIMARY KEY,
+    name varchar(255) NOT NULL UNIQUE
+);
 
-CREATE TABLE Checkout {
-    id bigint PRIMARY KEY,
-    start_time DATA, NOT NULL
-    end_time DATA, NOT NULL
+CREATE TABLE "Order" (
+    id bigserial PRIMARY KEY,
+    start_time DATE NOT NULL,
+    end_time DATE NOT NULL,
     user_id int NOT NULL,
+    is_returned BOOLEAN,
     CONSTRAINT fk_user_id
         FOREIGN KEY (user_id)
-            REFERENCES User(id)
+            REFERENCES "User"(id)
                 ON DELETE CASCADE
-    isReturned BOOLEAN
-};
+);
