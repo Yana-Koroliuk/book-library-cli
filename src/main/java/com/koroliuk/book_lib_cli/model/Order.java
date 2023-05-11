@@ -25,20 +25,20 @@ public class Order {
         this.id = id;
     }
 
-    public LocalDate getStart_time() {
+    public LocalDate getStartTime() {
         return startTime;
     }
 
-    public void setStart_time(LocalDate start_time) {
-        this.startTime = start_time;
+    public void setStartTime(LocalDate startTime) {
+        this.startTime = startTime;
     }
 
-    public LocalDate getEnd_time() {
+    public LocalDate getEndTime() {
         return endTime;
     }
 
-    public void setEnd_time(LocalDate end_time) {
-        this.endTime = end_time;
+    public void setEndTime(LocalDate endTime) {
+        this.endTime = endTime;
     }
 
     public int getUserId() {

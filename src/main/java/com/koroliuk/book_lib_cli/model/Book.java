@@ -26,11 +26,11 @@ public class Book {
         this.title = title;
     }
 
-    public int getCategory_id() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategory_id(int category_id) {
-        this.categoryId = category_id;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 }
