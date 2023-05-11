@@ -3,6 +3,8 @@ package com.koroliuk.book_lib_cli.dao;
 import com.koroliuk.book_lib_cli.DbManager;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookAuthorDao {
     Connection connection = DbManager.getInstance().getConnection();
@@ -27,6 +29,31 @@ public class BookAuthorDao {
             if (resultSet.next()) {
                 return true;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public List<Integer> findByBookId(int bookId) {
+        List<Integer> authorsId = new ArrayList<>();
+        String query = "SELECT author_id FROM Book_Author WHERE book_id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, bookId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                authorsId.add(resultSet.getInt("author_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return authorsId;
+    }
+    public Boolean deleteBookAuthorByAuthorId(int authorId) {
+        String query = "DELETE FROM Book_Author WHERE author_id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, authorId);
+            preparedStatement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }

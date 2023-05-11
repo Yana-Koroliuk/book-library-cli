@@ -4,8 +4,6 @@ import com.koroliuk.book_lib_cli.DbManager;
 import com.koroliuk.book_lib_cli.model.Book;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BookDao {
     Connection connection = DbManager.getInstance().getConnection();
@@ -38,12 +36,12 @@ public class BookDao {
         }
         return false;
     }
-    public Boolean updateBook(Book book) {
+    public Boolean updateBook(int bookId, String bookName, int categoryId) {
         String query = "UPDATE Book set title = ?, category_id = ? where ID = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, book.getTitle());
-            preparedStatement.setInt(2, book.getCategory_id());
-            preparedStatement.setInt(3, book.getId());
+            preparedStatement.setString(1, bookName);
+            preparedStatement.setInt(2, categoryId);
+            preparedStatement.setInt(3, bookId);
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -62,5 +60,17 @@ public class BookDao {
         }
         return false;
     }
-    //public Integer findByName(String title)
+    public Integer findByName(String title) {
+        String query = "SELECT id FROM Book WHERE title = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, title);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
