@@ -34,5 +34,40 @@ public class AuthorDao {
         }
         return false;
     }
-
+    public Boolean updateAuthor(String authorName, int authorId) {
+        String query = "UPDATE Author set NAME = ? where ID = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, authorName);
+            preparedStatement.setInt(2, authorId);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public Integer findByName(String authorName) {
+        String query = "SELECT id FROM Author WHERE name = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, authorName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public Boolean deleteAuthorById(int authorId) {
+        String query = "DELETE FROM Author WHERE id=?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, authorId);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
