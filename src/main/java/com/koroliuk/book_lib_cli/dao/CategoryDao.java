@@ -34,7 +34,18 @@ public class CategoryDao {
         }
         return false;
     }
-
+    public Boolean updateCategory(String categoryName, int categoryId) {
+        String query = "UPDATE Category set NAME = ? where ID = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, categoryName);
+            preparedStatement.setInt(2, categoryId);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public Integer findByName(String categoryName) {
         String query = "SELECT id FROM Category WHERE name = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -47,5 +58,16 @@ public class CategoryDao {
             e.printStackTrace();
         }
         return null;
+    }
+    public Boolean deleteCategoryById(int categoryId) {
+        String query = "DELETE FROM Category WHERE id=?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, categoryId);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
