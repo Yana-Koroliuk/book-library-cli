@@ -8,7 +8,7 @@ import java.util.List;
 
 public class BookAuthorDao {
     Connection connection = DbManager.getInstance().getConnection();
-    public Boolean creatBookAuthor(int bookId, int authorId) {
+    public Boolean createBookAuthor(int bookId, int authorId) {
         String query = "INSERT INTO Book_Author (book_id, author_id) VALUES (?, ?);";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, bookId);
@@ -34,6 +34,16 @@ public class BookAuthorDao {
         }
         return false;
     }
+    public void updateBookAuthor(int bookId, int authorId) {
+        String query = "UPDATE Book_Author SET author_id = ? WHERE book_id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, authorId);
+            preparedStatement.setInt(2, bookId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public List<Integer> findByBookId(int bookId) {
         List<Integer> authorsId = new ArrayList<>();
         String query = "SELECT author_id FROM Book_Author WHERE book_id = ?;";
@@ -48,12 +58,42 @@ public class BookAuthorDao {
         }
         return authorsId;
     }
-    public Boolean deleteBookAuthorByAuthorId(int authorId) {
-        String query = "DELETE FROM Book_Author WHERE author_id = ?;";
+    public List<Integer> findByAuthorId(int authorId) {
+        List<Integer> booksId = new ArrayList<>();
+        String query = "SELECT book_id FROM Book_Author WHERE author_id = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, authorId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                booksId.add(resultSet.getInt("book_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return booksId;
+    }
+    public Boolean deleteBookAuthorByBookAuthorId(int bookId, int authorId) {
+        String query = "DELETE FROM Book_Author WHERE book_id = ? and author_id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, bookId);
+            preparedStatement.setInt(2, authorId);
             preparedStatement.executeUpdate();
             return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean isAuthorUsedInOtherBooks(int authorId, int bookId) {
+        String query = "SELECT COUNT(*) FROM Book_Author WHERE author_id = ? AND book_id != ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, authorId);
+            preparedStatement.setInt(2, bookId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

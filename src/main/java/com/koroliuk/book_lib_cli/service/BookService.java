@@ -31,7 +31,7 @@ public class BookService {
                     authorId = authorDao.findByName(author);
                 }
                 if (!bookAuthorDao.existBookAuthor(bookId, authorId)) {
-                    bookAuthorDao.creatBookAuthor(bookId, authorId);
+                    bookAuthorDao.createBookAuthor(bookId, authorId);
                 }
             }
         }
@@ -51,39 +51,55 @@ public class BookService {
                 book = new Book(bookId, bookNameNew, categoryId);
                 List<Integer> authorsId = bookAuthorDao.findByBookId(bookId);
                 for (int i = 0; i < authorsId.size(); i++) {
-                    if (i < authors.size()) {
-                        authorDao.updateAuthor(authors.get(i), authorsId.get(i));
-                    } else {
+                    if (!bookAuthorDao.isAuthorUsedInOtherBooks(authorsId.get(i), bookId)) {
                         authorDao.deleteAuthorById(authorsId.get(i));
-                        bookAuthorDao.deleteBookAuthorByAuthorId(authorsId.get(i));
+                    } else {
+                        bookAuthorDao.deleteBookAuthorByBookAuthorId(bookId, authorsId.get(i));
+                    }
+                    if (i < authors.size()) {
+                        int authorId;
+                        if (authorDao.existByName(authors.get(i))) {
+                            authorId = authorDao.findByName(authors.get(i));
+                        } else {
+                            authorId = authorDao.createAuthor(authors.get(i));
+                        }
+                        bookAuthorDao.createBookAuthor(bookId, authorId);
                     }
                 }
                 if (authors.size() > authorsId.size()) {
                     for (int i = authorsId.size(); i < authors.size(); i++) {
-                        int authorId = authorDao.createAuthor(authors.get(i));
-                        bookAuthorDao.creatBookAuthor(bookId, authorId);
+                        int authorId;
+                        if (authorDao.existByName(authors.get(i))) {
+                            authorId = authorDao.findByName(authors.get(i));
+                        } else {
+                            authorId = authorDao.createAuthor(authors.get(i));
+                        }
+                        bookAuthorDao.createBookAuthor(bookId, authorId);
                     }
                 }
             }
         }
         return book;
     }
+
+
     public Book deleteBookByTitle(List<String> authors, String bookName, String category) {
         Book book = null;
         if (bookDao.existBook(bookName)) {
             int bookId = bookDao.findByName(bookName);
             List<Integer> authorsId = bookAuthorDao.findByBookId(bookId);
-            if (bookDao.deleteBookById(bookId)) {
-                for (Integer authorId : authorsId) {
-                    bookAuthorDao.deleteBookAuthorByAuthorId(authorId);
+            for (Integer authorId : authorsId) {
+                List<Integer> booksId = bookAuthorDao.findByAuthorId(authorId);
+                if (booksId.size() == 1) {
                     authorDao.deleteAuthorById(authorId);
                 }
+            }
+            if (bookDao.deleteBookById(bookId)) {
                 int categoryId = categoryDao.findByName(category);
                 book = new Book(bookId, bookName, categoryId);
             }
         }
         return book;
     }
-
 }
 
