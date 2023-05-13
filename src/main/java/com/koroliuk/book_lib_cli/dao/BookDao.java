@@ -23,6 +23,19 @@ public class BookDao {
         }
         return generatedId;
     }
+    public Boolean existBookById(int bookId) {
+        String query = "SELECT * FROM Book WHERE id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, bookId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public Boolean existBook(String bookName) {
         String query = "SELECT * FROM Book WHERE title = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -49,10 +62,10 @@ public class BookDao {
         }
         return false;
     }
-    public Boolean deleteBookById(int id) {
+    public Boolean deleteBookById(int bookId) {
         String query = "DELETE FROM book WHERE id=?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, bookId);
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -67,6 +80,32 @@ public class BookDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String findById(int bookId) {
+        String query = "SELECT title FROM Book WHERE id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, bookId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("title");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public Integer findCategoryId(int bookId) {
+        String query = "SELECT category_id FROM Book WHERE id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, bookId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("category_id");
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -17,7 +17,7 @@ public class BookService {
         int bookId = 0;
         if (!bookDao.existBook(bookName)) {
             int categoryId;
-            if (categoryDao.existCategory(category)) {
+            if (categoryDao.existByName(category)) {
                 categoryId = categoryDao.findByName(category);
             } else {
                 categoryId = categoryDao.createCategory(category);
@@ -37,12 +37,11 @@ public class BookService {
         }
         return bookId;
     }
-    public Book updateBook(List<String> authors, String bookNameOld, String bookNameNew, String category) {
+    public Book updateBook(int bookId, List<String> authors, String bookNameNew, String category) {
         Book book = null;
-        if (bookDao.existBook(bookNameOld)) {
-            int bookId = bookDao.findByName(bookNameOld);
+        if (bookDao.existBookById(bookId)) {
             int categoryId;
-            if (categoryDao.existCategory(category)) {
+            if (categoryDao.existByName(category)) {
                 categoryId = categoryDao.findByName(category);
             } else {
                 categoryId = categoryDao.createCategory(category);
@@ -83,21 +82,20 @@ public class BookService {
     }
 
 
-    public Book deleteBookByTitle(List<String> authors, String bookName, String category) {
+    public Book deleteBookById(int bookId) {
         Book book = null;
-        if (bookDao.existBook(bookName)) {
-            int bookId = bookDao.findByName(bookName);
-            List<Integer> authorsId = bookAuthorDao.findByBookId(bookId);
-            for (Integer authorId : authorsId) {
-                List<Integer> booksId = bookAuthorDao.findByAuthorId(authorId);
-                if (booksId.size() == 1) {
-                    authorDao.deleteAuthorById(authorId);
-                }
+        String bookName = bookDao.findById(bookId);
+        List<Integer> authorsId = bookAuthorDao.findByBookId(bookId);
+        for (Integer authorId : authorsId) {
+            if (!bookAuthorDao.isAuthorUsedInOtherBooks(authorId, bookId)) {
+                authorDao.deleteAuthorById(authorId);
+            } else {
+                bookAuthorDao.deleteBookAuthorByBookAuthorId(bookId, authorId);
             }
-            if (bookDao.deleteBookById(bookId)) {
-                int categoryId = categoryDao.findByName(category);
-                book = new Book(bookId, bookName, categoryId);
-            }
+        }
+        int categoryId = bookDao.findCategoryId(bookId);
+        if (bookDao.deleteBookById(bookId)) {
+            book = new Book(bookId, bookName, categoryId);
         }
         return book;
     }
