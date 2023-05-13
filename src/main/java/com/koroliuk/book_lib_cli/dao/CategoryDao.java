@@ -1,6 +1,8 @@
 package com.koroliuk.book_lib_cli.dao;
 
 import com.koroliuk.book_lib_cli.DbManager;
+import com.koroliuk.book_lib_cli.model.Category;
+import com.koroliuk.book_lib_cli.model.User;
 
 import java.sql.*;
 
@@ -21,7 +23,7 @@ public class CategoryDao {
         }
         return generatedId;
     }
-    public Boolean existCategory(String categoryName) {
+    public Boolean existByName(String categoryName) {
         String query = "SELECT id FROM Category WHERE name = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, categoryName);
@@ -34,7 +36,20 @@ public class CategoryDao {
         }
         return false;
     }
-    public Boolean updateCategory(String categoryName, int categoryId) {
+    public Boolean existById(int categoryId) {
+        String query = "SELECT category FROM Category WHERE id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, categoryId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public Boolean updateCategory(int categoryId, String categoryName) {
         String query = "UPDATE Category set NAME = ? where ID = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, categoryName);
@@ -69,5 +84,20 @@ public class CategoryDao {
             e.printStackTrace();
         }
         return false;
+    }
+    public Category readCategoryById(int categoryId) {
+        String query = "SELECT * FROM Category WHERE id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, categoryId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String categoryName = resultSet.getString("name");
+                return new Category(id, categoryName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

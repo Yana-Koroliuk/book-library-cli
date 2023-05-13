@@ -2,33 +2,31 @@ package com.koroliuk.book_lib_cli.service;
 
 import com.koroliuk.book_lib_cli.dao.CategoryDao;
 import com.koroliuk.book_lib_cli.model.Category;
+import com.koroliuk.book_lib_cli.model.User;
 
 public class CategoryService {
     CategoryDao categoryDao = new CategoryDao();
     public int createCategory(String categoryName) {
         int categoryId = 0;
-        if (!categoryDao.existCategory(categoryName)) {
+        if (!categoryDao.existByName(categoryName)) {
             categoryId = categoryDao.createCategory(categoryName);
         }
         return categoryId;
     }
-    public Category updateCategory(String categoryNameOld, String categoryNameNew) {
+    public Category updateCategory(int categoryId, String categoryNameNew) {
         Category category = null;
-        if (categoryDao.existCategory(categoryNameOld)) {
-            int categoryId = categoryDao.findByName(categoryNameOld);
-            if (categoryDao.updateCategory(categoryNameNew, categoryId)) {
+        if (categoryDao.existById(categoryId)) {
+            if (categoryDao.updateCategory(categoryId, categoryNameNew)) {
                 category = new Category(categoryId, categoryNameNew);
             }
         }
         return category;
     }
-    public Category deleteCategoryById(String categoryName) {
+    public Category deleteCategoryById(int categoryId) {
         Category category = null;
-        if (categoryDao.existCategory(categoryName)) {
-            int categoryId = categoryDao.findByName(categoryName);
-            if (categoryDao.deleteCategoryById(categoryId)) {
-                category = new Category(categoryId, categoryName);
-            }
+        if (categoryDao.existById(categoryId)) {
+            category = categoryDao.readCategoryById(categoryId);
+            categoryDao.deleteCategoryById(categoryId);
         }
         return category;
     }
