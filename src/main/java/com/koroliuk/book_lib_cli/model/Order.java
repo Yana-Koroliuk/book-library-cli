@@ -1,15 +1,16 @@
 package com.koroliuk.book_lib_cli.model;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Order {
     int id;
-    LocalDate startTime;
-    LocalDate endTime;
+    Date startTime;
+    Date endTime;
     int userId;
     Boolean isReturned;
 
-    public Order(int id, LocalDate startTime, LocalDate endTime, int userId, Boolean isReturned) {
+    public Order(int id, Date startTime, Date endTime, int userId, Boolean isReturned) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -25,19 +26,19 @@ public class Order {
         this.id = id;
     }
 
-    public LocalDate getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDate startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDate getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDate endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
