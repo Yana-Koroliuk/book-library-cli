@@ -2,6 +2,7 @@ package com.koroliuk.book_lib_cli.service;
 
 import com.koroliuk.book_lib_cli.dao.AuthorDao;
 import com.koroliuk.book_lib_cli.model.Author;
+import com.koroliuk.book_lib_cli.model.User;
 
 public class AuthorService {
     AuthorDao authorDao = new AuthorDao();
@@ -13,23 +14,20 @@ public class AuthorService {
         }
         return authorId;
     }
-    public Author updateAuthor(String authorNameOld, String authorNameNew) {
+    public Author updateAuthor(int authorId, String authorNameNew) {
         Author author = null;
-        if (authorDao.existByName(authorNameOld)) {
-            int authorId = authorDao.findByName(authorNameOld);
-            if (authorDao.updateAuthor(authorNameNew, authorId)) {
+        if (authorDao.existById(authorId)) {
+            if (authorDao.updateAuthor(authorId, authorNameNew)) {
                 author = new Author(authorId, authorNameNew);
             }
          }
         return author;
     }
-    public Author deleteAuthorById(String authorName) {
+    public Author deleteAuthorById(int authorId) {
         Author author = null;
-        if (authorDao.existByName(authorName)) {
-            int authorId = authorDao.findByName(authorName);
-            if (authorDao.deleteAuthorById(authorId)) {
-                author = new Author(authorId, authorName);
-            }
+        if (authorDao.existById(authorId)) {
+            author = authorDao.readAuthorById(authorId);
+            authorDao.deleteAuthorById(authorId);
         }
         return author;
     }

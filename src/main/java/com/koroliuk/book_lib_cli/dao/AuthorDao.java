@@ -1,6 +1,8 @@
 package com.koroliuk.book_lib_cli.dao;
 
 import com.koroliuk.book_lib_cli.DbManager;
+import com.koroliuk.book_lib_cli.model.Author;
+import com.koroliuk.book_lib_cli.model.User;
 
 import java.sql.*;
 
@@ -34,7 +36,20 @@ public class AuthorDao {
         }
         return false;
     }
-    public Boolean updateAuthor(String authorName, int authorId) {
+    public Boolean existById(int authorId) {
+        String query = "SELECT * FROM Author WHERE id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, authorId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public Boolean updateAuthor(int authorId, String authorName) {
         String query = "UPDATE Author set NAME = ? where ID = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, authorName);
@@ -69,5 +84,20 @@ public class AuthorDao {
             e.printStackTrace();
         }
         return false;
+    }
+    public Author readAuthorById(int authorId) {
+        String query = "SELECT * FROM Author WHERE id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, authorId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String authorName = resultSet.getString("name");
+                return new Author(id, authorName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
