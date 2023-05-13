@@ -4,6 +4,8 @@ import com.koroliuk.book_lib_cli.DbManager;
 import com.koroliuk.book_lib_cli.model.Book;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookDao {
     Connection connection = DbManager.getInstance().getConnection();
@@ -111,5 +113,56 @@ public class BookDao {
             e.printStackTrace();
         }
         return null;
+    }
+    public List<String> findBookByAuthor (String authorName) {
+        List<String> bookTitles = new ArrayList<>();
+        String query = "SELECT B.title FROM Book B " +
+                "JOIN Book_Author BA on BA.book_id = B.id " +
+                "JOIN Author A on BA.author_id = A.id " +
+                "WHERE A.name = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, authorName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String title = resultSet.getString("title");
+                bookTitles.add(title);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookTitles;
+    }
+    public List<String> findBookByCategory (String categoryName) {
+        List<String> bookTitles = new ArrayList<>();
+        String query = "SELECT B.title FROM Book B " +
+                "JOIN Category C on C.id = B.category_id " +
+                "WHERE C.name = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, categoryName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String title = resultSet.getString("title");
+                bookTitles.add(title);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookTitles;
+    }
+    public List<String> findBookByPartTitle (String partTitle) {
+        List<String> bookTitles = new ArrayList<>();
+        String query = "SELECT * FROM Book\n" +
+                "WHERE title LIKE ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, "%" + partTitle + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String title = resultSet.getString("title");
+                bookTitles.add(title);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookTitles;
     }
 }

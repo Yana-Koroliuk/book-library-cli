@@ -6,6 +6,8 @@ import com.koroliuk.book_lib_cli.dao.BookDao;
 import com.koroliuk.book_lib_cli.dao.CategoryDao;
 import com.koroliuk.book_lib_cli.model.Book;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookService {
@@ -98,6 +100,15 @@ public class BookService {
             book = new Book(bookId, bookName, categoryId);
         }
         return book;
+    }
+    public List<String> findBookByAuthor(String authorName) {
+        return bookDao.findBookByAuthor(authorName);
+    }
+    public List<String> findBookByCategory(String categoryName) {
+        return bookDao.findBookByCategory(categoryName);
+    }
+    public List<String> findBookByPartTitle(String partTitle) {
+        return bookDao.findBookByPartTitle(partTitle);
     }
 }
 
