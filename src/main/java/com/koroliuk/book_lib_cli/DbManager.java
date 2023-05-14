@@ -7,15 +7,15 @@ import java.sql.SQLException;
 public class DbManager {
     private static DbManager instance;
     private Connection connection = null;
-    private String url = "jdbc:postgresql://localhost:5432/librarydb";
-    private String username = "userk";
-    private String password = "1234";
 
-    private DbManager () throws SQLException {
+    private DbManager () {
         try {
             Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://localhost:5432/librarydb";
+            String username = "userk";
+            String password = "1234";
             this.connection = DriverManager.getConnection(url, username, password);
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Database Connection Creation Failed : " + e.getMessage());
         }
     }
@@ -24,9 +24,14 @@ public class DbManager {
         return connection;
     }
 
-    public static DbManager getInstance() throws SQLException {
-        if (instance == null || instance.getConnection().isClosed()) {
-            instance = new DbManager();
+    public static DbManager getInstance() {
+        try {
+            if (instance == null || instance.getConnection().isClosed()) {
+                instance = new DbManager();
+            }
+            return instance;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return instance;
     }
