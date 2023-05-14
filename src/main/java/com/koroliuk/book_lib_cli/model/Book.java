@@ -4,11 +4,13 @@ public class Book {
     int id;
     String title;
     int categoryId;
+    int exemplars;
 
-    public Book(Integer id, String title, int categoryId) {
+    public Book(Integer id, String title, int categoryId, int exemplars) {
         this.id = id;
         this.title = title;
         this.categoryId = categoryId;
+        this.exemplars = exemplars;
     }
     public int getId() {
         return id;
@@ -32,5 +34,13 @@ public class Book {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public int getExemplars() {
+        return exemplars;
+    }
+
+    public void setExemplars(int exemplars) {
+        this.exemplars = exemplars;
     }
 }
