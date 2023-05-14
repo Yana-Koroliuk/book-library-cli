@@ -23,12 +23,11 @@ public class AuthorService {
          }
         return author;
     }
-    public Author deleteAuthorById(int authorId) {
-        Author author = null;
+    public boolean deleteAuthorById(int authorId) {
         if (authorDao.existById(authorId)) {
-            author = authorDao.readAuthorById(authorId);
             authorDao.deleteAuthorById(authorId);
+            return true;
         }
-        return author;
+        return false;
     }
 }
