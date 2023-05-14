@@ -3,10 +3,12 @@ package com.koroliuk.book_lib_cli.model;
 public class User {
     int id;
     String name;
+    String password;
 
-    public User(int id, String name) {
+    public User(int id, String name, String password) {
         this.id = id;
         this.name = name;
+        this.password = password;
     }
 
     public int getId() {
@@ -23,5 +25,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

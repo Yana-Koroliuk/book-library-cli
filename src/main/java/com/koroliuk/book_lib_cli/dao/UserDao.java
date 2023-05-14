@@ -8,11 +8,12 @@ import java.sql.*;
 
 public class UserDao {
     Connection connection = DbManager.getInstance().getConnection();
-    public int createUser(String userName) {
-        String query = "INSERT INTO \"User\"(name) VALUES (?);";
+    public int createUser(String userName, String password) {
+        String query = "INSERT INTO \"User\"(name, password) VALUES (?, ?);";
         int generatedId = 0;
         try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, userName);
+            preparedStatement.setString(2, password);
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -23,11 +24,12 @@ public class UserDao {
         }
         return generatedId;
     }
-    public Boolean updateUser(int userId, String userName) {
-        String query = "UPDATE \"User\" set NAME = ? where ID = ?;";
+    public Boolean updateUser(int userId, String userName, String password) {
+        String query = "UPDATE \"User\" set NAME = ?, password = ? where ID = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, userName);
-            preparedStatement.setInt(2, userId);
+            preparedStatement.setString(2, password);
+            preparedStatement.setInt(3, userId);
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -93,7 +95,8 @@ public class UserDao {
             if (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String userName = resultSet.getString("name");
-                return new User(id, userName);
+                String password = resultSet.getString("password");
+                return new User(id, userName, password);
             }
         } catch (SQLException e) {
             e.printStackTrace();
