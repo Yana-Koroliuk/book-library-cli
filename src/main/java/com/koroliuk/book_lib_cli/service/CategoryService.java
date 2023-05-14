@@ -2,10 +2,10 @@ package com.koroliuk.book_lib_cli.service;
 
 import com.koroliuk.book_lib_cli.dao.CategoryDao;
 import com.koroliuk.book_lib_cli.model.Category;
-import com.koroliuk.book_lib_cli.model.User;
 
 public class CategoryService {
     CategoryDao categoryDao = new CategoryDao();
+
     public int createCategory(String categoryName) {
         int categoryId = 0;
         if (!categoryDao.existByName(categoryName)) {
@@ -13,6 +13,7 @@ public class CategoryService {
         }
         return categoryId;
     }
+
     public Category updateCategory(int categoryId, String categoryNameNew) {
         Category category = null;
         if (categoryDao.existById(categoryId)) {
@@ -22,6 +23,7 @@ public class CategoryService {
         }
         return category;
     }
+
     public boolean deleteCategoryById(int categoryId) {
         if (categoryDao.existById(categoryId)) {
             categoryDao.deleteCategoryById(categoryId);

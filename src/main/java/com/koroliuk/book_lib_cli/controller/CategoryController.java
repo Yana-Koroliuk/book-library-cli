@@ -1,6 +1,5 @@
 package com.koroliuk.book_lib_cli.controller;
 
-import com.koroliuk.book_lib_cli.model.Author;
 import com.koroliuk.book_lib_cli.model.Category;
 import com.koroliuk.book_lib_cli.service.CategoryService;
 
@@ -10,6 +9,7 @@ import static com.koroliuk.book_lib_cli.SessionManager.getCurrentUser;
 
 public class CategoryController {
     static CategoryService categoryService = new CategoryService();
+
     public static void createCategory(String input) {
         String categoryName = input.substring(input.indexOf("\"") + 1, input.lastIndexOf("\""));
         if (!Objects.equals(categoryName, "")) {
@@ -17,7 +17,7 @@ public class CategoryController {
             if (currentUser != null) {
                 int categoryId = categoryService.createCategory(categoryName);
                 if (categoryId != 0) {
-                    System.out.println(categoryId);
+                    System.out.println("Category id: " + categoryId);
                 } else {
                     System.out.println("Already exist");
                 }
@@ -28,6 +28,7 @@ public class CategoryController {
             System.out.println("Please write again");
         }
     }
+
     public static void updateCategory(String input) {
         int categoryId = Integer.parseInt(input.substring(0, input.indexOf(" ")));
         String categoryNameNew = input.substring(input.indexOf("\"") + 1, input.lastIndexOf("\""));
@@ -35,7 +36,9 @@ public class CategoryController {
             String currentUser = getCurrentUser();
             if (currentUser != null) {
                 Category category = categoryService.updateCategory(categoryId, categoryNameNew);
-                System.out.println(category.getId() + " " + category.getName());
+                System.out.println("id | category name");
+                System.out.println("------------------");
+                System.out.println(category.getId() + " | " + category.getName());
             } else {
                 System.out.println("No possibility");
             }
@@ -43,6 +46,7 @@ public class CategoryController {
             System.out.println("Please write again");
         }
     }
+
     public static void deleteCategory(String input) {
         int categoryId = Integer.parseInt(input.trim());
         String currentUser = getCurrentUser();
