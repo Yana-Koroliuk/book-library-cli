@@ -8,6 +8,7 @@ import java.util.List;
 
 public class BookAuthorDao {
     Connection connection = DbManager.getInstance().getConnection();
+
     public Boolean createBookAuthor(int bookId, int authorId) {
         String query = "INSERT INTO Book_Author (book_id, author_id) VALUES (?, ?);";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -20,6 +21,7 @@ public class BookAuthorDao {
         }
         return false;
     }
+
     public Boolean existBookAuthor(int bookId, int authorId) {
         String query = "SELECT * FROM Book_Author WHERE book_id = ? and author_id = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -34,16 +36,7 @@ public class BookAuthorDao {
         }
         return false;
     }
-    public void updateBookAuthor(int bookId, int authorId) {
-        String query = "UPDATE Book_Author SET author_id = ? WHERE book_id = ?;";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, authorId);
-            preparedStatement.setInt(2, bookId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
     public List<Integer> findByBookId(int bookId) {
         List<Integer> authorsId = new ArrayList<>();
         String query = "SELECT author_id FROM Book_Author WHERE book_id = ?;";
@@ -58,20 +51,7 @@ public class BookAuthorDao {
         }
         return authorsId;
     }
-    public List<Integer> findByAuthorId(int authorId) {
-        List<Integer> booksId = new ArrayList<>();
-        String query = "SELECT book_id FROM Book_Author WHERE author_id = ?;";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, authorId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                booksId.add(resultSet.getInt("book_id"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return booksId;
-    }
+
     public Boolean deleteBookAuthorByBookAuthorId(int bookId, int authorId) {
         String query = "DELETE FROM Book_Author WHERE book_id = ? and author_id = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -84,6 +64,7 @@ public class BookAuthorDao {
         }
         return false;
     }
+
     public boolean isAuthorUsedInOtherBooks(int authorId, int bookId) {
         String query = "SELECT COUNT(*) FROM Book_Author WHERE author_id = ? AND book_id != ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {

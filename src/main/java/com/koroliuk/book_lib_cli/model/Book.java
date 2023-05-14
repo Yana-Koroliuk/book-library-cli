@@ -12,6 +12,7 @@ public class Book {
         this.categoryId = categoryId;
         this.exemplars = exemplars;
     }
+
     public int getId() {
         return id;
     }

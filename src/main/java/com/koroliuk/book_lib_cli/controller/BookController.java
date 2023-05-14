@@ -9,6 +9,7 @@ import static com.koroliuk.book_lib_cli.SessionManager.getCurrentUser;
 
 public class BookController {
     static BookService bookService = new BookService();
+
     public static void createBook(String input) {
         String[] parts = input.split("\"");
         String bookName = parts[1];
@@ -22,7 +23,7 @@ public class BookController {
                 if (exemplars >= 0) {
                     int bookId = bookService.createBook(authors, bookName, categoryName, exemplars);
                     if (bookId != 0) {
-                        System.out.println(bookId);
+                        System.out.println("Book id: " + bookId);
                     } else {
                         System.out.println("Already exist");
                     }
@@ -36,6 +37,7 @@ public class BookController {
             System.out.println("Please write again");
         }
     }
+
     public static void updateBook(String input) {
         String[] parts = input.split("\"");
         int bookId = Integer.parseInt(parts[0].trim());
@@ -49,7 +51,9 @@ public class BookController {
             if (currentUser != null) {
                 if (exemplars >= 0) {
                     Book book = bookService.updateBook(bookId, authors, bookNameNew, categoryName, exemplars);
-                    System.out.println(book.getId() + " " + "\""+book.getTitle()+ "\"" + " " + book.getCategoryId()+" : "+categoryName);
+                    System.out.println("id | book name | category id | category name");
+                    System.out.println("-------------------------------------------");
+                    System.out.println(book.getId() + " | " + "\"" + book.getTitle() + "\"" + " | " + book.getCategoryId() + " | " + categoryName);
                 } else {
                     System.out.println("Wrong exemplars");
                 }
@@ -60,6 +64,7 @@ public class BookController {
             System.out.println("Please write again");
         }
     }
+
     public static void deleteBook(String input) {
         int bookId = Integer.parseInt(input.trim());
         String currentUser = getCurrentUser();
@@ -73,11 +78,13 @@ public class BookController {
             System.out.println("No possibility");
         }
     }
+
     public static void statusBook(String input) {
         int bookId = Integer.parseInt(input.trim());
         int exemplars = bookService.findBookExemplars(bookId);
         System.out.println("Available " + exemplars + " exemplars");
     }
+
     public static void searchBook(String input) {
         List<String> parsedStrings = new ArrayList<>();
         int startIndex = 0;
@@ -105,11 +112,13 @@ public class BookController {
         authorName = !Objects.equals(authorName, "") ? authorName : null;
         List<List<String>> books = bookService.searchBookByTitleAuthorCategory(bookName, authorName, categoryName);
         if (books.size() != 0) {
+            System.out.println("id | book name | author name | category");
+            System.out.println("---------------------------------------");
             for (List<String> book : books) {
-                System.out.println(book.get(0) + " " + book.get(1) + " " + book.get(2) + " " + book.get(3));
+                System.out.println(book.get(0) + " | " + book.get(1) + " | " + book.get(2) + " | " + book.get(3));
             }
         } else {
-                System.out.println("Nothing found");
+            System.out.println("Nothing found");
         }
     }
 }

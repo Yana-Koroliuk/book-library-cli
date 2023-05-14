@@ -13,6 +13,7 @@ public class BookService {
     CategoryDao categoryDao = new CategoryDao();
     AuthorDao authorDao = new AuthorDao();
     BookAuthorDao bookAuthorDao = new BookAuthorDao();
+
     public int createBook(List<String> authors, String bookName, String category, int exemplars) {
         int bookId = 0;
         if (!bookDao.existBook(bookName)) {
@@ -37,6 +38,7 @@ public class BookService {
         }
         return bookId;
     }
+
     public Book updateBook(int bookId, List<String> authors, String bookNameNew, String category, int exemplars) {
         Book book = null;
         if (bookDao.existBookById(bookId)) {
@@ -80,6 +82,7 @@ public class BookService {
         }
         return book;
     }
+
     public boolean deleteBookById(int bookId) {
         List<Integer> authorsId = bookAuthorDao.findByBookId(bookId);
         for (Integer authorId : authorsId) {
@@ -95,18 +98,11 @@ public class BookService {
         }
         return false;
     }
-    public List<String> searchBookByAuthor(String authorName) {
-        return bookDao.findBookByAuthor(authorName);
-    }
-    public List<String> searchBookByCategory(String categoryName) {
-        return bookDao.findBookByCategory(categoryName);
-    }
-    public List<String> searchBookByPartTitle(String partTitle) {
-        return bookDao.findBookByPartTitle(partTitle);
-    }
+
     public List<List<String>> searchBookByTitleAuthorCategory(String title, String author, String category) {
         return bookDao.findBookByTitleAuthorCategory(title, author, category);
     }
+
     public int findBookExemplars(int bookId) {
         if (bookDao.existBookById(bookId)) {
             int exemplars = bookDao.findExemplarsByBookId(bookId);
