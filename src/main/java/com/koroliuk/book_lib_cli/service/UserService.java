@@ -28,13 +28,12 @@ public class UserService {
         }
         return user;
     }
-    public User deleteUserById(int userId) {
-        User user = null;
+    public boolean deleteUserById(int userId) {
         if (userDao.existById(userId)) {
-            user = userDao.readUserById(userId);
             userDao.deleteUserById(userId);
+            return true;
         }
-        return user;
+        return false;
     }
     public Boolean signInVerify(String userName, String password) {
         int userId = userDao.findByName(userName);
