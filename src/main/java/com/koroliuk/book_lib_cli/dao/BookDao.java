@@ -194,17 +194,21 @@ public class BookDao {
     }
     public List<List<String>> findBookByTitleAuthorCategory (String title, String author, String category) {
         List<List<String>> books = new ArrayList<>();
-        String query = "SELECT b.id, b.title, a.name AS author_name, c.name AS category_name FROM book B" +
-                "         JOIN book_author BA ON B.id = BA.book_id" +
-                "         JOIN author A ON BA.author_id = A.id" +
-                "         JOIN category C ON B.category_id = C.id\n" +
-                "WHERE B.title = ?" +
-                "  AND A.name =  ?" +
-                "  AND C.name =  ?;";
+        String query = "SELECT b.id, b.title, a.name AS author_name, c.name AS category_name " +
+                "FROM book B " +
+                "JOIN book_author BA ON B.id = BA.book_id " +
+                "JOIN author A ON BA.author_id = A.id " +
+                "JOIN category C ON B.category_id = C.id " +
+                "WHERE (B.title = ? OR ? IS NULL) " +
+                "  AND (A.name = ? OR ? IS NULL) " +
+                "  AND (C.name = ? OR ? IS NULL);";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, title);
-            preparedStatement.setString(2, author);
-            preparedStatement.setString(3, category);
+            preparedStatement.setString(2, title);
+            preparedStatement.setString(3, author);
+            preparedStatement.setString(4, author);
+            preparedStatement.setString(5, category);
+            preparedStatement.setString(6, category);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 String bookId = String.valueOf(resultSet.getInt("id"));

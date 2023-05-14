@@ -80,11 +80,7 @@ public class BookService {
         }
         return book;
     }
-
-
-    public Book deleteBookById(int bookId) {
-        Book book = null;
-        String bookName = bookDao.findById(bookId);
+    public boolean deleteBookById(int bookId) {
         List<Integer> authorsId = bookAuthorDao.findByBookId(bookId);
         for (Integer authorId : authorsId) {
             if (!bookAuthorDao.isAuthorUsedInOtherBooks(authorId, bookId)) {
@@ -93,12 +89,11 @@ public class BookService {
                 bookAuthorDao.deleteBookAuthorByBookAuthorId(bookId, authorId);
             }
         }
-        int categoryId = bookDao.findCategoryId(bookId);
-        int exemplars = bookDao.findExemplarsByBookId(bookId);
-        if (bookDao.deleteBookById(bookId)) {
-            book = new Book(bookId, bookName, categoryId, exemplars);
+        if (bookDao.existBookById(bookId)) {
+            bookDao.deleteBookById(bookId);
+            return true;
         }
-        return book;
+        return false;
     }
     public List<String> searchBookByAuthor(String authorName) {
         return bookDao.findBookByAuthor(authorName);
