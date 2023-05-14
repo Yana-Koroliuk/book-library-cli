@@ -10,7 +10,7 @@ CREATE TABLE Category (
 
 CREATE TABLE Book (
     id bigserial PRIMARY KEY,
-    title varchar(255) NOT NULL UNIQUE,
+    title varchar(255) NOT NULL,
     category_id int NOT NULL,
     CONSTRAINT fk_category_id
         FOREIGN KEY (category_id)
