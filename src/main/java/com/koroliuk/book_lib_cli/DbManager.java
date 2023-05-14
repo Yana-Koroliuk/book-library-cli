@@ -8,7 +8,7 @@ public class DbManager {
     private static DbManager instance;
     private Connection connection = null;
 
-    private DbManager () {
+    private DbManager() {
         try {
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://localhost:5432/librarydb";

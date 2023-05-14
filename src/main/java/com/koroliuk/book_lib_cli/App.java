@@ -1,6 +1,7 @@
 package com.koroliuk.book_lib_cli;
 
 import com.koroliuk.book_lib_cli.controller.*;
+
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -29,7 +30,7 @@ public class App {
                 Map.entry("register", UserController::registerUser)
         );
         Scanner scanner = new Scanner(System.in);
-        while(true) {
+        while (true) {
             String input = scanner.nextLine();
             String[] inputs = input.split(" ");
             String command = inputs[0];
@@ -45,29 +46,3 @@ public class App {
         }
     }
 }
-// search "Book Name" [Author S.] "Category 1" -> also work correct if some param is absent
-
-// order-book bookId [2023-05-01, 2023-05-02]
-// return-book orderId
-
-// status-book bookId
-// status-user
-
-// create-book "Name Book" [Author1, Author2] "Category 1" countOfExemplars
-// create-author "Name Author"
-// create-category "Name category"
-
-// update-book bookId "NewName Book" [Author1, Author2] "Category 1" countOfExemplars
-// update-author authorId "Author New"
-// update-category categoryId "Category New"
-// update-user userId "UserName New" password
-
-// delete-book bookId
-// delete-author authorId
-// delete-category categoryId
-// delete-user userId
-// delete-order orderId
-
-//login
-//register
-//logout
