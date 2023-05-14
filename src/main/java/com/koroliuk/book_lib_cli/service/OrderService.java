@@ -3,7 +3,6 @@ package com.koroliuk.book_lib_cli.service;
 import com.koroliuk.book_lib_cli.dao.BookDao;
 import com.koroliuk.book_lib_cli.dao.OrderDao;
 import com.koroliuk.book_lib_cli.dao.UserDao;
-import com.koroliuk.book_lib_cli.model.Book;
 import com.koroliuk.book_lib_cli.model.Order;
 
 import java.sql.Date;
@@ -18,6 +17,7 @@ public class OrderService {
     public int createOrder(Date startTime, Date endTime, int userId, int bookId) {
         return orderDao.createOrder(startTime, endTime, userId, bookId);
     }
+
     public Order updateOrder(int orderId, Date startTimeNew, Date endTimeNew, int userId, int bookId, boolean isReturned) {
         Order order = null;
         if (orderDao.existOrderById(orderId)) {
@@ -27,6 +27,7 @@ public class OrderService {
         }
         return order;
     }
+
     public boolean deleteOrderById(int orderId) {
         if (orderDao.existOrderById(orderId)) {
             orderDao.deleteOrderById(orderId);
@@ -34,6 +35,7 @@ public class OrderService {
         }
         return false;
     }
+
     public Order orderBook(Date startTime, Date endTime, String userName, int bookId) {
         Order order = null;
         int exemplars = 0;
@@ -48,6 +50,7 @@ public class OrderService {
         }
         return order;
     }
+
     public Order returnBook(int orderId) {
         Order order = null;
         int exemplars = 0;
@@ -63,6 +66,7 @@ public class OrderService {
         }
         return order;
     }
+
     public List<List<String>> checkOrdersOfUser(String userName) {
         List<List<String>> books = new ArrayList<>();
         int userId = userDao.findByName(userName);

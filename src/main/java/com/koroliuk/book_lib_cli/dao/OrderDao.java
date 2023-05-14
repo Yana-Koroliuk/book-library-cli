@@ -9,6 +9,7 @@ import java.util.List;
 
 public class OrderDao {
     Connection connection = DbManager.getInstance().getConnection();
+
     public int createOrder(Date startTime, Date endTime, int userId, int bookId) {
         String query = "INSERT INTO \"Order\" (start_time, end_time, user_id, book_id, is_returned) VALUES (?, ?, ?, ?, ?);";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -56,20 +57,7 @@ public class OrderDao {
         }
         return false;
     }
-    public Boolean existByStartTimeEndTime(Date startTime, Date endTime) {
-        String query = "SELECT * FROM \"Order\" WHERE start_time = ? and end_time = ?;";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setDate(1, startTime);
-            preparedStatement.setDate(2, endTime);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+
     public Boolean existOrderById(int orderId) {
         String query = "SELECT * FROM \"Order\" WHERE id = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -83,6 +71,7 @@ public class OrderDao {
         }
         return false;
     }
+
     public Order readOrderById(int orderId) {
         String query = "SELECT * FROM \"Order\" WHERE id = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -102,6 +91,7 @@ public class OrderDao {
         }
         return null;
     }
+
     public List<Order> checkOrdersOfUser(int userId) {
         List<Order> orders = new ArrayList<>();
         String query = "SELECT * FROM \"Order\" WHERE user_id = ?;";

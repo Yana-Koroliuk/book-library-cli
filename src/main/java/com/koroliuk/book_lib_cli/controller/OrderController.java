@@ -3,13 +3,11 @@ package com.koroliuk.book_lib_cli.controller;
 import com.koroliuk.book_lib_cli.model.Order;
 import com.koroliuk.book_lib_cli.service.OrderService;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static com.koroliuk.book_lib_cli.SessionManager.getCurrentUser;
 
@@ -26,7 +24,9 @@ public class OrderController {
             java.sql.Date endTime = times.get(1);
             Order order = orderService.orderBook(startTime, endTime, getCurrentUser(), bookId);
             if (order != null) {
-                System.out.println(order.getId() + " " + order.getStartTime() + " " + order.getEndTime() + " " + order.getUserId() + " " + order.getBookId() + " " + order.getReturned());
+                System.out.println("id | start time | end time | user id | book id | is returned");
+                System.out.println("------------------------------------------------------------");
+                System.out.println(order.getId() + " | " + order.getStartTime() + " | " + order.getEndTime() + " | " + order.getUserId() + " | " + order.getBookId() + " | " + order.getReturned());
             } else {
                 System.out.println("Not available exemplars");
             }
@@ -34,12 +34,15 @@ public class OrderController {
             System.out.println("You need to login");
         }
     }
+
     public static void returnBook(String input) {
         if (getCurrentUser() != null) {
             int orderId = Integer.parseInt(input.trim());
             Order order = orderService.returnBook(orderId);
             if (order != null) {
-                System.out.println(order.getId() + " " + order.getStartTime() + " " + order.getEndTime() + " " + order.getUserId() + " " + order.getBookId() + " " + order.getReturned());
+                System.out.println("id | start time | end time | user id | book id | is returned");
+                System.out.println("------------------------------------------------------------");
+                System.out.println(order.getId() + " | " + order.getStartTime() + " | " + order.getEndTime() + " | " + order.getUserId() + " | " + order.getBookId() + " | " + order.getReturned());
             } else {
                 System.out.println("Not exist");
             }
@@ -47,6 +50,7 @@ public class OrderController {
             System.out.println("You need to login");
         }
     }
+
     public static void deleteOder(String input) {
         int orderId = Integer.parseInt(input.trim());
         String currentUser = getCurrentUser();
@@ -60,6 +64,7 @@ public class OrderController {
             System.out.println("No possibility");
         }
     }
+
     public static void checkOrdersOfUser(String input) {
         if (getCurrentUser() != null) {
             List<List<String>> books = orderService.checkOrdersOfUser(getCurrentUser());
@@ -87,6 +92,7 @@ public class OrderController {
             System.out.println("You need to login");
         }
     }
+
     public static List<java.sql.Date> convertToDate(List<String> dates) {
         List<java.sql.Date> times = new ArrayList<>();
         try {
