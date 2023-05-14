@@ -1,11 +1,7 @@
 package com.koroliuk.book_lib_cli.service;
 
 import com.koroliuk.book_lib_cli.dao.UserDao;
-import com.koroliuk.book_lib_cli.model.Book;
-import com.koroliuk.book_lib_cli.model.Order;
 import com.koroliuk.book_lib_cli.model.User;
-
-import java.sql.Date;
 
 import static com.koroliuk.book_lib_cli.PasswordHasher.verifyPassword;
 
@@ -15,10 +11,11 @@ public class UserService {
     public int createUser(String userName, String password) {
         int userId = 0;
         if (!userDao.existByName(userName)) {
-            userId =  userDao.createUser(userName, password);
+            userId = userDao.createUser(userName, password);
         }
         return userId;
     }
+
     public User updateUser(int userId, String userNameNew, String password) {
         User user = null;
         if (userDao.existById(userId)) {
@@ -28,6 +25,7 @@ public class UserService {
         }
         return user;
     }
+
     public boolean deleteUserById(int userId) {
         if (userDao.existById(userId)) {
             userDao.deleteUserById(userId);
@@ -35,6 +33,7 @@ public class UserService {
         }
         return false;
     }
+
     public Boolean signInVerify(String userName, String password) {
         int userId = userDao.findByName(userName);
         User user = userDao.readUserById(userId);

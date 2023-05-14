@@ -7,6 +7,7 @@ public class PasswordHasher {
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         return hashedPassword;
     }
+
     public static boolean verifyPassword(String password, String hashedPassword) {
         return BCrypt.checkpw(password, hashedPassword);
     }
