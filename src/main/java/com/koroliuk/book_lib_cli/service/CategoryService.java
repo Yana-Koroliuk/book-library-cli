@@ -22,12 +22,11 @@ public class CategoryService {
         }
         return category;
     }
-    public Category deleteCategoryById(int categoryId) {
-        Category category = null;
+    public boolean deleteCategoryById(int categoryId) {
         if (categoryDao.existById(categoryId)) {
-            category = categoryDao.readCategoryById(categoryId);
             categoryDao.deleteCategoryById(categoryId);
+            return true;
         }
-        return category;
+        return false;
     }
 }
