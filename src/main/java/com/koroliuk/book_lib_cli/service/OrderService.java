@@ -27,13 +27,12 @@ public class OrderService {
         }
         return order;
     }
-    public Order deleteOrderById(int orderId) {
-        Order order = null;
+    public boolean deleteOrderById(int orderId) {
         if (orderDao.existOrderById(orderId)) {
-            order = orderDao.readOrderById(orderId);
             orderDao.deleteOrderById(orderId);
+            return true;
         }
-        return order;
+        return false;
     }
     public Order orderBook(Date startTime, Date endTime, String userName, int bookId) {
         Order order = null;
