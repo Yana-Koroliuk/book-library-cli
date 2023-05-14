@@ -15,7 +15,8 @@ CREATE TABLE Book (
     CONSTRAINT fk_category_id
         FOREIGN KEY (category_id)
             REFERENCES Category(id)
-                ON DELETE CASCADE
+                ON DELETE CASCADE,
+    exemplars bigint
 );
 
 CREATE TABLE Book_Author (
@@ -28,7 +29,8 @@ CREATE TABLE Book_Author (
 
 CREATE TABLE "User" (
     id   bigserial PRIMARY KEY,
-    name varchar(255) NOT NULL UNIQUE
+    name varchar(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE "Order" (
@@ -36,9 +38,14 @@ CREATE TABLE "Order" (
     start_time DATE NOT NULL,
     end_time DATE NOT NULL,
     user_id int NOT NULL,
+    book_id int NOT NULL,
     is_returned BOOLEAN,
     CONSTRAINT fk_user_id
         FOREIGN KEY (user_id)
             REFERENCES "User"(id)
+                ON DELETE CASCADE,
+    CONSTRAINT fk_book_id
+        FOREIGN KEY (book_id)
+            REFERENCES Book(id)
                 ON DELETE CASCADE
 );
