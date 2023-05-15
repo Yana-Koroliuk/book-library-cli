@@ -8,9 +8,13 @@ import java.util.Objects;
 import static com.koroliuk.book_lib_cli.SessionManager.getCurrentUser;
 
 public class CategoryController {
-    static CategoryService categoryService = new CategoryService();
+    private static CategoryService categoryService;
 
-    public static void createCategory(String input) {
+    public CategoryController(CategoryService categoryService) {
+        CategoryController.categoryService = categoryService;
+    }
+
+    public void createCategory(String input) {
         String categoryName = input.substring(input.indexOf("\"") + 1, input.lastIndexOf("\""));
         if (!Objects.equals(categoryName, "")) {
             String currentUser = getCurrentUser();
@@ -29,7 +33,7 @@ public class CategoryController {
         }
     }
 
-    public static void updateCategory(String input) {
+    public void updateCategory(String input) {
         int categoryId = Integer.parseInt(input.substring(0, input.indexOf(" ")));
         String categoryNameNew = input.substring(input.indexOf("\"") + 1, input.lastIndexOf("\""));
         if (categoryId != 0 && !Objects.equals(categoryNameNew, "")) {
@@ -47,7 +51,7 @@ public class CategoryController {
         }
     }
 
-    public static void deleteCategory(String input) {
+    public void deleteCategory(String input) {
         int categoryId = Integer.parseInt(input.trim());
         String currentUser = getCurrentUser();
         if (currentUser != null) {

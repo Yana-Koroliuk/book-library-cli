@@ -1,10 +1,15 @@
 package com.koroliuk.book_lib_cli.service;
 
+import com.koroliuk.book_lib_cli.dao.AuthorDao;
 import com.koroliuk.book_lib_cli.dao.CategoryDao;
 import com.koroliuk.book_lib_cli.model.Category;
 
 public class CategoryService {
-    CategoryDao categoryDao = new CategoryDao();
+    private static CategoryDao categoryDao;
+
+    public CategoryService(CategoryDao categoryDao) {
+        CategoryService.categoryDao = categoryDao;
+    }
 
     public int createCategory(String categoryName) {
         int categoryId = 0;
