@@ -1,12 +1,17 @@
 package com.koroliuk.book_lib_cli.service;
 
+import com.koroliuk.book_lib_cli.dao.AuthorDao;
 import com.koroliuk.book_lib_cli.dao.UserDao;
 import com.koroliuk.book_lib_cli.model.User;
 
 import static com.koroliuk.book_lib_cli.PasswordHasher.verifyPassword;
 
 public class UserService {
-    UserDao userDao = new UserDao();
+    private static UserDao userDao;
+
+    public UserService(UserDao userDao) {
+        UserService.userDao = userDao;
+    }
 
     public int createUser(String userName, String password) {
         int userId = 0;

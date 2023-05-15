@@ -11,9 +11,13 @@ import static com.koroliuk.book_lib_cli.SessionManager.getCurrentUser;
 import static com.koroliuk.book_lib_cli.SessionManager.setCurrentUser;
 
 public class UserController {
-    static UserService userService = new UserService();
+    private static UserService userService;
 
-    public static void updateUser(String input) {
+    public UserController(UserService userService) {
+        UserController.userService = userService;
+    }
+
+    public void updateUser(String input) {
         int userId = Integer.parseInt(input.substring(0, input.indexOf(" ")));
         String UserNameNew = input.substring(input.indexOf("\"") + 1, input.lastIndexOf("\""));
         String password = input.substring(input.lastIndexOf(" ") + 1);
@@ -37,7 +41,7 @@ public class UserController {
         }
     }
 
-    public static void deleteUser(String input) {
+    public void deleteUser(String input) {
         int userId = Integer.parseInt(input.trim());
         String currentUser = getCurrentUser();
         if (currentUser != null) {
@@ -51,7 +55,7 @@ public class UserController {
         }
     }
 
-    public static void loginUser(String input) {
+    public void loginUser(String input) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("User name: ");
         String userName = scanner.nextLine();
@@ -65,7 +69,7 @@ public class UserController {
         }
     }
 
-    public static void logoutUser(String input) {
+    public void logoutUser(String input) {
         if (getCurrentUser() != null) {
             setCurrentUser(null);
             System.out.println("Successful logout");
@@ -74,7 +78,7 @@ public class UserController {
         }
     }
 
-    public static void registerUser(String input) {
+    public void registerUser(String input) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("User name: ");
         String userName = scanner.nextLine();
