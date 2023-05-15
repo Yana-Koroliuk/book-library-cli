@@ -1,10 +1,15 @@
 package com.koroliuk.book_lib_cli.service;
 
+import com.koroliuk.book_lib_cli.controller.AuthorController;
 import com.koroliuk.book_lib_cli.dao.AuthorDao;
 import com.koroliuk.book_lib_cli.model.Author;
 
 public class AuthorService {
-    AuthorDao authorDao = new AuthorDao();
+    private static AuthorDao authorDao;
+
+    public AuthorService(AuthorDao authorDao) {
+        AuthorService.authorDao = authorDao;
+    }
 
     public int createAuthor(String authorName) {
         int authorId = 0;

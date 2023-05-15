@@ -8,9 +8,13 @@ import java.util.Objects;
 import static com.koroliuk.book_lib_cli.SessionManager.getCurrentUser;
 
 public class AuthorController {
-    static AuthorService authorService = new AuthorService();
+    private static AuthorService authorService;
 
-    public static void createAuthor(String input) {
+    public AuthorController(AuthorService authorService) {
+        AuthorController.authorService = authorService;
+    }
+
+    public void createAuthor(String input) {
         String authorName = input.substring(input.indexOf("\"") + 1, input.lastIndexOf("\""));
         if (!Objects.equals(authorName, "")) {
             String currentUser = getCurrentUser();
@@ -29,7 +33,7 @@ public class AuthorController {
         }
     }
 
-    public static void updateAuthor(String input) {
+    public void updateAuthor(String input) {
         int authorId = Integer.parseInt(input.substring(0, input.indexOf(" ")));
         String authorNameNew = input.substring(input.indexOf("\"") + 1, input.lastIndexOf("\""));
         if (authorId != 0 && !Objects.equals(authorNameNew, "")) {
@@ -47,7 +51,7 @@ public class AuthorController {
         }
     }
 
-    public static void deleteAuthor(String input) {
+    public void deleteAuthor(String input) {
         int authorId = Integer.parseInt(input.trim());
         String currentUser = getCurrentUser();
         if (currentUser != null) {
