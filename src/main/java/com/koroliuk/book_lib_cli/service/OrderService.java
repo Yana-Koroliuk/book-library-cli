@@ -1,8 +1,6 @@
 package com.koroliuk.book_lib_cli.service;
 
-import com.koroliuk.book_lib_cli.dao.BookDao;
-import com.koroliuk.book_lib_cli.dao.OrderDao;
-import com.koroliuk.book_lib_cli.dao.UserDao;
+import com.koroliuk.book_lib_cli.dao.*;
 import com.koroliuk.book_lib_cli.model.Order;
 
 import java.sql.Date;
@@ -10,9 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderService {
-    OrderDao orderDao = new OrderDao();
-    BookDao bookDao = new BookDao();
-    UserDao userDao = new UserDao();
+    private static OrderDao orderDao;
+    private static BookDao bookDao;
+    private static UserDao userDao;
+
+    public OrderService(OrderDao orderDao, BookDao bookDao, UserDao userDao) {
+        OrderService.orderDao = orderDao;
+        OrderService.bookDao = bookDao;
+        OrderService.userDao = userDao;
+    }
 
     public int createOrder(Date startTime, Date endTime, int userId, int bookId) {
         return orderDao.createOrder(startTime, endTime, userId, bookId);

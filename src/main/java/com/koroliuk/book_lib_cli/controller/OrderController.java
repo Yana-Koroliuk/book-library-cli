@@ -12,9 +12,13 @@ import java.util.List;
 import static com.koroliuk.book_lib_cli.SessionManager.getCurrentUser;
 
 public class OrderController {
-    static OrderService orderService = new OrderService();
+    private static OrderService orderService;
 
-    public static void orderBook(String input) {
+    public OrderController(OrderService orderService) {
+        OrderController.orderService = orderService;
+    }
+
+    public void orderBook(String input) {
         if (getCurrentUser() != null) {
             int bookId = Integer.parseInt(input.substring(0, input.indexOf(" ")));
             String datesString = input.substring(input.indexOf("[") + 1, input.indexOf("]"));
@@ -35,7 +39,7 @@ public class OrderController {
         }
     }
 
-    public static void returnBook(String input) {
+    public void returnBook(String input) {
         if (getCurrentUser() != null) {
             int orderId = Integer.parseInt(input.trim());
             Order order = orderService.returnBook(orderId);
@@ -51,7 +55,7 @@ public class OrderController {
         }
     }
 
-    public static void deleteOder(String input) {
+    public void deleteOder(String input) {
         int orderId = Integer.parseInt(input.trim());
         String currentUser = getCurrentUser();
         if (currentUser != null) {
@@ -65,7 +69,7 @@ public class OrderController {
         }
     }
 
-    public static void checkOrdersOfUser(String input) {
+    public void checkOrdersOfUser(String input) {
         if (getCurrentUser() != null) {
             List<List<String>> books = orderService.checkOrdersOfUser(getCurrentUser());
             if (books != null) {
@@ -93,7 +97,7 @@ public class OrderController {
         }
     }
 
-    public static List<java.sql.Date> convertToDate(List<String> dates) {
+    public List<java.sql.Date> convertToDate(List<String> dates) {
         List<java.sql.Date> times = new ArrayList<>();
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
