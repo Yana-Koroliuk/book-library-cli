@@ -8,9 +8,13 @@ import java.util.*;
 import static com.koroliuk.book_lib_cli.SessionManager.getCurrentUser;
 
 public class BookController {
-    static BookService bookService = new BookService();
+    private static BookService bookService;
 
-    public static void createBook(String input) {
+    public BookController(BookService bookService) {
+        BookController.bookService = bookService;
+    }
+
+    public void createBook(String input) {
         String[] parts = input.split("\"");
         String bookName = parts[1];
         String categoryName = parts[3];
@@ -38,7 +42,7 @@ public class BookController {
         }
     }
 
-    public static void updateBook(String input) {
+    public void updateBook(String input) {
         String[] parts = input.split("\"");
         int bookId = Integer.parseInt(parts[0].trim());
         String bookNameNew = parts[1];
@@ -65,7 +69,7 @@ public class BookController {
         }
     }
 
-    public static void deleteBook(String input) {
+    public void deleteBook(String input) {
         int bookId = Integer.parseInt(input.trim());
         String currentUser = getCurrentUser();
         if (currentUser != null) {
@@ -79,13 +83,13 @@ public class BookController {
         }
     }
 
-    public static void statusBook(String input) {
+    public void statusBook(String input) {
         int bookId = Integer.parseInt(input.trim());
         int exemplars = bookService.findBookExemplars(bookId);
         System.out.println("Available " + exemplars + " exemplars");
     }
 
-    public static void searchBook(String input) {
+    public void searchBook(String input) {
         List<String> parsedStrings = new ArrayList<>();
         int startIndex = 0;
         int endIndex;

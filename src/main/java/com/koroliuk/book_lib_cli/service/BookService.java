@@ -9,10 +9,17 @@ import com.koroliuk.book_lib_cli.model.Book;
 import java.util.List;
 
 public class BookService {
-    BookDao bookDao = new BookDao();
-    CategoryDao categoryDao = new CategoryDao();
-    AuthorDao authorDao = new AuthorDao();
-    BookAuthorDao bookAuthorDao = new BookAuthorDao();
+    private static BookDao bookDao;
+    private static CategoryDao categoryDao;
+    private static AuthorDao authorDao;
+    private static BookAuthorDao bookAuthorDao;
+
+    public BookService(BookDao bookDao, AuthorDao authorDao, CategoryDao categoryDao, BookAuthorDao bookAuthorDao) {
+        BookService.bookDao = bookDao;
+        BookService.authorDao = authorDao;
+        BookService.categoryDao = categoryDao;
+        BookService.bookAuthorDao = bookAuthorDao;
+    }
 
     public int createBook(List<String> authors, String bookName, String category, int exemplars) {
         int bookId = 0;
