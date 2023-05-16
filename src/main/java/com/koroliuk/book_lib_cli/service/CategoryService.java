@@ -1,6 +1,5 @@
 package com.koroliuk.book_lib_cli.service;
 
-import com.koroliuk.book_lib_cli.dao.AuthorDao;
 import com.koroliuk.book_lib_cli.dao.CategoryDao;
 import com.koroliuk.book_lib_cli.model.Category;
 
@@ -11,12 +10,13 @@ public class CategoryService {
         CategoryService.categoryDao = categoryDao;
     }
 
-    public int createCategory(String categoryName) {
-        int categoryId = 0;
+    public Category createCategory(String categoryName) {
+        Category category = null;
         if (!categoryDao.existByName(categoryName)) {
-            categoryId = categoryDao.createCategory(categoryName);
+            int categoryId = categoryDao.createCategory(categoryName);
+            category = new Category(categoryId, categoryName);
         }
-        return categoryId;
+        return category;
     }
 
     public Category updateCategory(int categoryId, String categoryNameNew) {

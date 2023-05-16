@@ -19,9 +19,9 @@ public class CategoryController {
         if (!Objects.equals(categoryName, "")) {
             String currentUser = getCurrentUser();
             if (currentUser != null) {
-                int categoryId = categoryService.createCategory(categoryName);
-                if (categoryId != 0) {
-                    System.out.println("Category id: " + categoryId);
+                Category category = categoryService.createCategory(categoryName);
+                if (category != null) {
+                    System.out.println("Category id: " + category.getId());
                 } else {
                     System.out.println("Already exist");
                 }
