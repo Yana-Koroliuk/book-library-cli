@@ -2,6 +2,7 @@ package com.koroliuk.book_lib_cli.model;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Order {
     int id;
@@ -66,5 +67,21 @@ public class Order {
 
     public void setReturned(Boolean returned) {
         isReturned = returned;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Order other = (Order) obj;
+        return id == other.id &&
+                Objects.equals(startTime, other.startTime) &&
+                Objects.equals(endTime, other.endTime) &&
+                userId == other.userId &&
+                bookId == other.bookId &&
+                isReturned == other.isReturned;    
     }
 }

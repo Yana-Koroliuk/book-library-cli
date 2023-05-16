@@ -17,11 +17,6 @@ public class OrderService {
         OrderService.bookDao = bookDao;
         OrderService.userDao = userDao;
     }
-
-    public int createOrder(Date startTime, Date endTime, int userId, int bookId) {
-        return orderDao.createOrder(startTime, endTime, userId, bookId);
-    }
-
     public Order updateOrder(int orderId, Date startTimeNew, Date endTimeNew, int userId, int bookId, boolean isReturned) {
         Order order = null;
         if (orderDao.existOrderById(orderId)) {
