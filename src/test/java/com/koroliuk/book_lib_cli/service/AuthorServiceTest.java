@@ -18,65 +18,63 @@ public class AuthorServiceTest {
         authorService = new AuthorService(authorDao);
     }
     @Test
-    public void testCreateAuthorNotExist() {
-        String authorName = "John Doe";
-        int expectedAuthorId = 1;
+    public void testCreateAuthor_WhenAuthorNotExist() {
+        int authorId = 1;
+        String authorName = "Jane Doe";
+        Author expectedAuthor = new Author(authorId, authorName);
         when(authorDao.existByName(authorName)).thenReturn(false);
-        when(authorDao.createAuthor(authorName)).thenReturn(expectedAuthorId);
-        int actualAuthorId = authorService.createAuthor(authorName);
-        Assert.assertEquals(expectedAuthorId, actualAuthorId);
+        when(authorDao.createAuthor(authorName)).thenReturn(expectedAuthor.getId());
+        Author actualAuthor = authorService.createAuthor(authorName);
+        Assert.assertEquals(expectedAuthor, actualAuthor);
         verify(authorDao).existByName(authorName);
         verify(authorDao).createAuthor(authorName);
     }
     @Test
-    public void testCreateAuthorExist() {
-        String authorName = "John Doe";
-        int expectedAuthorId = 0;
+    public void testCreateAuthor_WhenAuthorExist() {
+        String authorName = "Jane Doe";
         when(authorDao.existByName(authorName)).thenReturn(true);
-        int actualAuthorId = authorService.createAuthor(authorName);
-        Assert.assertEquals(expectedAuthorId, actualAuthorId);
+        Author actualAuthor = authorService.createAuthor(authorName);
+        Assert.assertNull(actualAuthor);
         verify(authorDao).existByName(authorName);
         verify(authorDao, never()).createAuthor(authorName);
     }
     @Test
-    public void testUpdateAuthorExist() {
+    public void testUpdateAuthor_WhenAuthorExist() {
         int authorId = 1;
         String authorNameNew = "Jane Doe";
         Author expectedAuthor = new Author(authorId, authorNameNew);
         when(authorDao.existById(authorId)).thenReturn(true);
         when(authorDao.updateAuthor(authorId, authorNameNew)).thenReturn(true);
         Author actualAuthor = authorService.updateAuthor(authorId, authorNameNew);
-        Assert.assertEquals(expectedAuthor.getId(), actualAuthor.getId());
-        Assert.assertEquals(expectedAuthor.getName(), actualAuthor.getName());
+        Assert.assertEquals(expectedAuthor, actualAuthor);
         verify(authorDao).existById(authorId);
         verify(authorDao).updateAuthor(authorId, authorNameNew);
     }
     @Test
-    public void testUpdateAuthorNotExist() {
+    public void testUpdateAuthor_WhenAuthorNotExist() {
         int authorId = 1;
         String authorNameNew = "Jane Doe";
-        Author expectedAuthor = null;
         when(authorDao.existById(authorId)).thenReturn(false);
         Author actualAuthor = authorService.updateAuthor(authorId, authorNameNew);
-        Assert.assertEquals(expectedAuthor, actualAuthor);
+        Assert.assertNull(actualAuthor);
         verify(authorDao).existById(authorId);
         verify(authorDao, never()).updateAuthor(authorId, authorNameNew);
     }
     @Test
-    public void testDeleteAuthorByIdExist() {
+    public void testDeleteAuthorById_WhenAuthorExist() {
         int authorId = 1;
         when(authorDao.existById(authorId)).thenReturn(true);
-        boolean result = authorService.deleteAuthorById(authorId);
-        Assert.assertTrue(result);
+        boolean actualResult = authorService.deleteAuthorById(authorId);
+        Assert.assertTrue(actualResult);
         verify(authorDao).existById(authorId);
         verify(authorDao).deleteAuthorById(authorId);
     }
     @Test
-    public void testDeleteAuthorByIdNotExist() {
+    public void testDeleteAuthorById_WhenAuthorNotExist() {
         int authorId = 1;
         when(authorDao.existById(authorId)).thenReturn(false);
-        boolean result = authorService.deleteAuthorById(authorId);
-        Assert.assertFalse(result);
+        boolean actualResult = authorService.deleteAuthorById(authorId);
+        Assert.assertFalse(actualResult);
         verify(authorDao).existById(authorId);
         verify(authorDao, never()).deleteAuthorById(authorId);
     }
