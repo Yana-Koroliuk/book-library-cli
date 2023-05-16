@@ -1,6 +1,5 @@
 package com.koroliuk.book_lib_cli.service;
 
-import com.koroliuk.book_lib_cli.controller.AuthorController;
 import com.koroliuk.book_lib_cli.dao.AuthorDao;
 import com.koroliuk.book_lib_cli.model.Author;
 
@@ -11,12 +10,13 @@ public class AuthorService {
         AuthorService.authorDao = authorDao;
     }
 
-    public int createAuthor(String authorName) {
-        int authorId = 0;
+    public Author createAuthor(String authorName) {
+        Author author = null;
         if (!authorDao.existByName(authorName)) {
-            authorId = authorDao.createAuthor(authorName);
+            int authorId = authorDao.createAuthor(authorName);
+            author = new Author(authorId, authorName);
         }
-        return authorId;
+        return author;
     }
 
     public Author updateAuthor(int authorId, String authorNameNew) {

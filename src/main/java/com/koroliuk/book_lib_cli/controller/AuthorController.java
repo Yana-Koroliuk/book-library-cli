@@ -19,9 +19,9 @@ public class AuthorController {
         if (!Objects.equals(authorName, "")) {
             String currentUser = getCurrentUser();
             if (currentUser != null) {
-                int authorId = authorService.createAuthor(authorName);
-                if (authorId != 0) {
-                    System.out.println("Author id: " + authorId);
+                Author author = authorService.createAuthor(authorName);
+                if (author != null) {
+                    System.out.println("Author id: " + author.getId());
                 } else {
                     System.out.println("Already exist");
                 }
