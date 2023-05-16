@@ -86,9 +86,9 @@ public class UserController {
         String password = scanner.nextLine();
         if (password.length() > 6) {
             String hashedPassword = hashPassword(password);
-            int userId = userService.createUser(userName, hashedPassword);
-            if (userId != 0) {
-                System.out.println("User id: " + userId);
+            User user = userService.createUser(userName, hashedPassword);
+            if (user != null) {
+                System.out.println("User id: " + user.getId());
             } else {
                 System.out.println("Already exist");
             }

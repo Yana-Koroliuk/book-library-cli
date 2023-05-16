@@ -1,5 +1,7 @@
 package com.koroliuk.book_lib_cli.model;
 
+import java.util.Objects;
+
 public class User {
     int id;
     String name;
@@ -33,5 +35,18 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        User other = (User) obj;
+        return id == other.id &&
+                Objects.equals(name, other.name) &&
+                Objects.equals(password, other.password);
     }
 }

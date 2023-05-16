@@ -1,6 +1,5 @@
 package com.koroliuk.book_lib_cli.service;
 
-import com.koroliuk.book_lib_cli.dao.AuthorDao;
 import com.koroliuk.book_lib_cli.dao.UserDao;
 import com.koroliuk.book_lib_cli.model.User;
 
@@ -13,12 +12,13 @@ public class UserService {
         UserService.userDao = userDao;
     }
 
-    public int createUser(String userName, String password) {
-        int userId = 0;
+    public User createUser(String userName, String password) {
+        User user = null;
         if (!userDao.existByName(userName)) {
-            userId = userDao.createUser(userName, password);
+            int userId = userDao.createUser(userName, password);
+            user = new User(userId, userName, password);
         }
-        return userId;
+        return user;
     }
 
     public User updateUser(int userId, String userNameNew, String password) {
