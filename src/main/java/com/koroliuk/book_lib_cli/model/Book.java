@@ -44,4 +44,17 @@ public class Book {
     public void setExemplars(int exemplars) {
         this.exemplars = exemplars;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Book other = (Book) obj;
+        return id == other.id && title.equals(other.title) && categoryId == other.categoryId && exemplars == other.exemplars;
+    }
 }
+

@@ -21,8 +21,8 @@ public class BookService {
         BookService.bookAuthorDao = bookAuthorDao;
     }
 
-    public int createBook(List<String> authors, String bookName, String category, int exemplars) {
-        int bookId = 0;
+    public Book createBook(List<String> authors, String bookName, String category, int exemplars) {
+        Book book = null;
         if (!bookDao.existBook(bookName)) {
             int categoryId;
             if (categoryDao.existByName(category)) {
@@ -30,7 +30,8 @@ public class BookService {
             } else {
                 categoryId = categoryDao.createCategory(category);
             }
-            bookId = bookDao.createBook(bookName, categoryId, exemplars);
+            int bookId = bookDao.createBook(bookName, categoryId, exemplars);
+            book = new Book(bookId, bookName, categoryId, exemplars);
             for (String author : authors) {
                 int authorId;
                 if (!authorDao.existByName(author)) {
@@ -43,7 +44,7 @@ public class BookService {
                 }
             }
         }
-        return bookId;
+        return book;
     }
 
     public Book updateBook(int bookId, List<String> authors, String bookNameNew, String category, int exemplars) {

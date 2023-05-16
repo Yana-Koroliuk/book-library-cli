@@ -25,9 +25,9 @@ public class BookController {
             String currentUser = getCurrentUser();
             if (currentUser != null) {
                 if (exemplars >= 0) {
-                    int bookId = bookService.createBook(authors, bookName, categoryName, exemplars);
-                    if (bookId != 0) {
-                        System.out.println("Book id: " + bookId);
+                    Book book = bookService.createBook(authors, bookName, categoryName, exemplars);
+                    if (book != null) {
+                        System.out.println("Book id: " + book.getId());
                     } else {
                         System.out.println("Already exist");
                     }
