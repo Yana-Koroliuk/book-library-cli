@@ -11,11 +11,13 @@ import com.koroliuk.book_lib_cli.model.Book;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+
 public class BookServiceTest {
     private BookDao bookDao;
     private CategoryDao categoryDao;
@@ -67,6 +69,7 @@ public class BookServiceTest {
         verify(bookAuthorDao).createBookAuthor(1, 2);
         verifyNoMoreInteractions(bookDao, categoryDao, authorDao, bookAuthorDao);
     }
+
     @Test
     public void testCreateBook_WhenBookExists() {
         List<String> authors = Arrays.asList("Author 1", "Author 2");
@@ -79,6 +82,7 @@ public class BookServiceTest {
         verify(bookDao).existBook(bookName);
         verifyNoMoreInteractions(bookDao, categoryDao, authorDao, bookAuthorDao);
     }
+
     @Test
     public void testUpdateBook_WhenBookExists() {
         int bookId = 1;
@@ -116,6 +120,7 @@ public class BookServiceTest {
         verify(bookAuthorDao).createBookAuthor(bookId, 2);
         verifyNoMoreInteractions(bookDao, categoryDao, authorDao, bookAuthorDao);
     }
+
     @Test
     public void testUpdateBook_WhenBookDoesNotExist() {
         int bookId = 1;
@@ -129,6 +134,7 @@ public class BookServiceTest {
         verify(bookDao).existBookById(bookId);
         verifyNoMoreInteractions(bookDao, categoryDao, authorDao, bookAuthorDao);
     }
+
     @Test
     public void testDeleteBookById_WhenBookExists() {
         int bookId = 1;
@@ -151,6 +157,7 @@ public class BookServiceTest {
         verify(bookDao).deleteBookById(bookId);
         verifyNoMoreInteractions(bookDao, categoryDao, authorDao, bookAuthorDao);
     }
+
     @Test
     public void testDeleteBookById_WhenBookNotExists() {
         int bookId = 1;
@@ -160,6 +167,7 @@ public class BookServiceTest {
         verify(bookDao).existBookById(bookId);
         verifyNoMoreInteractions(bookDao);
     }
+
     @Test
     public void testSearchBookByTitleAuthorCategory() {
         String title = "Book 1";
@@ -172,6 +180,7 @@ public class BookServiceTest {
         verify(bookDao).findBookByTitleAuthorCategory(title, author, category);
         verifyNoMoreInteractions(bookDao, categoryDao, authorDao, bookAuthorDao);
     }
+
     @Test
     public void testFindBookExemplars_WhenBookExist() {
         int bookId = 1;
@@ -184,6 +193,7 @@ public class BookServiceTest {
         verify(bookDao).findExemplarsByBookId(bookId);
         verifyNoMoreInteractions(bookDao);
     }
+
     @Test
     public void testFindBookExemplars_WhenBookNotExists() {
         int bookId = 1;
