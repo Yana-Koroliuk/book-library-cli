@@ -17,6 +17,7 @@ public class AuthorServiceTest {
         authorDao = mock(AuthorDao.class);
         authorService = new AuthorService(authorDao);
     }
+
     @Test
     public void testCreateAuthor_WhenAuthorNotExist() {
         int authorId = 1;
@@ -29,6 +30,7 @@ public class AuthorServiceTest {
         verify(authorDao).existByName(authorName);
         verify(authorDao).createAuthor(authorName);
     }
+
     @Test
     public void testCreateAuthor_WhenAuthorExist() {
         String authorName = "Jane Doe";
@@ -38,6 +40,7 @@ public class AuthorServiceTest {
         verify(authorDao).existByName(authorName);
         verify(authorDao, never()).createAuthor(authorName);
     }
+
     @Test
     public void testUpdateAuthor_WhenAuthorExist() {
         int authorId = 1;
@@ -50,6 +53,7 @@ public class AuthorServiceTest {
         verify(authorDao).existById(authorId);
         verify(authorDao).updateAuthor(authorId, authorNameNew);
     }
+
     @Test
     public void testUpdateAuthor_WhenAuthorNotExist() {
         int authorId = 1;
@@ -60,6 +64,7 @@ public class AuthorServiceTest {
         verify(authorDao).existById(authorId);
         verify(authorDao, never()).updateAuthor(authorId, authorNameNew);
     }
+
     @Test
     public void testDeleteAuthorById_WhenAuthorExist() {
         int authorId = 1;
@@ -69,6 +74,7 @@ public class AuthorServiceTest {
         verify(authorDao).existById(authorId);
         verify(authorDao).deleteAuthorById(authorId);
     }
+
     @Test
     public void testDeleteAuthorById_WhenAuthorNotExist() {
         int authorId = 1;
