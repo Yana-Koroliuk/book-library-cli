@@ -1,7 +1,6 @@
 package com.koroliuk.book_lib_cli.dao;
 
 import com.koroliuk.book_lib_cli.DbManager;
-import com.koroliuk.book_lib_cli.model.Category;
 
 import java.sql.*;
 
