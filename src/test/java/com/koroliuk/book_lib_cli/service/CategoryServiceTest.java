@@ -7,6 +7,7 @@ import com.koroliuk.book_lib_cli.model.Category;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 public class CategoryServiceTest {
     private CategoryDao categoryDao;
     private CategoryService categoryService;
@@ -16,6 +17,7 @@ public class CategoryServiceTest {
         categoryDao = mock(CategoryDao.class);
         categoryService = new CategoryService(categoryDao);
     }
+
     @Test
     public void testCreateCategory_WhenCategoryNotExist() {
         int categoryId = 1;
@@ -29,6 +31,7 @@ public class CategoryServiceTest {
         verify(categoryDao).createCategory(categoryName);
         verifyNoMoreInteractions(categoryDao);
     }
+
     @Test
     public void testCreateCategory_WhenCategoryExist() {
         String categoryName = "Category 1";
@@ -38,6 +41,7 @@ public class CategoryServiceTest {
         verify(categoryDao).existByName(categoryName);
         verifyNoMoreInteractions(categoryDao);
     }
+
     @Test
     public void testUpdateCategory_WhenCategoryExist() {
         int categoryId = 1;
@@ -51,6 +55,7 @@ public class CategoryServiceTest {
         verify(categoryDao).updateCategory(categoryId, categoryNameNew);
         verifyNoMoreInteractions(categoryDao);
     }
+
     @Test
     public void testUpdateCategory_WhenCategoryNotExist() {
         int categoryId = 1;
@@ -61,6 +66,7 @@ public class CategoryServiceTest {
         verify(categoryDao).existById(categoryId);
         verifyNoMoreInteractions(categoryDao);
     }
+
     @Test
     public void testDeleteCategoryById_WhenCategoryExist() {
         int categoryId = 1;
@@ -72,6 +78,7 @@ public class CategoryServiceTest {
         verify(categoryDao).deleteCategoryById(categoryId);
         verifyNoMoreInteractions(categoryDao);
     }
+
     @Test
     public void testDeleteCategoryById_WhenCategoryNotExist() {
         int categoryId = 1;
