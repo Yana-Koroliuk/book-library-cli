@@ -41,19 +41,6 @@ public class BookDao {
         return false;
     }
 
-    public Boolean existBook(String bookName) {
-        String query = "SELECT * FROM Book WHERE title = ?;";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, bookName);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     public Boolean updateBook(int bookId, String bookName, int categoryId, int exemplars) {
         String query = "UPDATE Book set title = ?, category_id = ?, exemplars = ? where ID = ?;";

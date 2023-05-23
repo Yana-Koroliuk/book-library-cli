@@ -35,7 +35,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void testCreateBook_WhenBookNotExist() {
+    public void testCreateBook() {
         List<String> authors = Arrays.asList("Author 1", "Author 2");
         String bookName = "Book 1";
         String category = "Category 1";
@@ -43,7 +43,6 @@ public class BookServiceTest {
         int categoryId = 1;
         int bookId = 1;
         Book expectedBook = new Book(bookId, bookName, categoryId, exemplars);
-        when(bookDao.existBook(bookName)).thenReturn(false);
         when(categoryDao.existByName(category)).thenReturn(false);
         when(categoryDao.createCategory(category)).thenReturn(1);
         when(bookDao.createBook(bookName, 1, exemplars)).thenReturn(1);
@@ -55,7 +54,6 @@ public class BookServiceTest {
         when(bookAuthorDao.existBookAuthor(1, 2)).thenReturn(false);
         Book actualBook = bookService.createBook(authors, bookName, category, exemplars);
         assertEquals(expectedBook, actualBook);
-        verify(bookDao).existBook(bookName);
         verify(categoryDao).existByName(category);
         verify(categoryDao).createCategory(category);
         verify(bookDao).createBook(bookName, 1, exemplars);
@@ -67,19 +65,6 @@ public class BookServiceTest {
         verify(bookAuthorDao).existBookAuthor(1, 2);
         verify(bookAuthorDao).createBookAuthor(1, 1);
         verify(bookAuthorDao).createBookAuthor(1, 2);
-        verifyNoMoreInteractions(bookDao, categoryDao, authorDao, bookAuthorDao);
-    }
-
-    @Test
-    public void testCreateBook_WhenBookExists() {
-        List<String> authors = Arrays.asList("Author 1", "Author 2");
-        String bookName = "Book 1";
-        String category = "Category 1";
-        int exemplars = 2;
-        when(bookDao.existBook(bookName)).thenReturn(true);
-        Book actualBook = bookService.createBook(authors, bookName, category, exemplars);
-        assertNull(actualBook);
-        verify(bookDao).existBook(bookName);
         verifyNoMoreInteractions(bookDao, categoryDao, authorDao, bookAuthorDao);
     }
 

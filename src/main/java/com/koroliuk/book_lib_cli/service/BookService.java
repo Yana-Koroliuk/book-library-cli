@@ -23,25 +23,23 @@ public class BookService {
 
     public Book createBook(List<String> authors, String bookName, String category, int exemplars) {
         Book book = null;
-        if (!bookDao.existBook(bookName)) {
-            int categoryId;
-            if (categoryDao.existByName(category)) {
-                categoryId = categoryDao.findByName(category);
+        int categoryId;
+        if (categoryDao.existByName(category)) {
+            categoryId = categoryDao.findByName(category);
+        } else {
+            categoryId = categoryDao.createCategory(category);
+        }
+        int bookId = bookDao.createBook(bookName, categoryId, exemplars);
+        book = new Book(bookId, bookName, categoryId, exemplars);
+        for (String author : authors) {
+            int authorId;
+            if (!authorDao.existByName(author)) {
+                authorId = authorDao.createAuthor(author);
             } else {
-                categoryId = categoryDao.createCategory(category);
+                authorId = authorDao.findByName(author);
             }
-            int bookId = bookDao.createBook(bookName, categoryId, exemplars);
-            book = new Book(bookId, bookName, categoryId, exemplars);
-            for (String author : authors) {
-                int authorId;
-                if (!authorDao.existByName(author)) {
-                    authorId = authorDao.createAuthor(author);
-                } else {
-                    authorId = authorDao.findByName(author);
-                }
-                if (!bookAuthorDao.existBookAuthor(bookId, authorId)) {
-                    bookAuthorDao.createBookAuthor(bookId, authorId);
-                }
+            if (!bookAuthorDao.existBookAuthor(bookId, authorId)) {
+                bookAuthorDao.createBookAuthor(bookId, authorId);
             }
         }
         return book;
